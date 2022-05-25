@@ -83,4 +83,31 @@ describe("Testes Conta Bancária", () => {
     } catch (error) {}
     expect(contaBancaria.getConta()).toBe("1");
   });
+
+  test("Quando o cliente quiser ver o saldo,cobrar a taxa de visualizacao", () => {
+    const conta = new ContaBancaria("123456", "1", "1212323156");
+    conta.deposita(100);
+
+    expect(conta.getSaldoEImprimeEmPapel()).toBe(99);
+  });
+
+  test("Quando o saldo do cliente for zero,avisar que nao sera possivel imprimir o comprovante", () => {
+    const conta = new ContaBancaria("123456", "1", "1212323156");
+    try {
+      conta.deposita(0);
+    } catch (error) {}
+
+    expect(() => {
+      conta.getSaldoEImprimeEmPapel();
+    }).toThrow("seu saldo é insuficiente para imprimir");
+  });
+
+  test("Quando o pagamento do pix exceder 900 reais", () => {
+    const contaBancaria = new ContaBancaria("123456", "1", "1212323156");
+    try {
+      contaBancaria.recebePix(900);
+      contaBancaria.pagaPix(900);
+    } catch (error) {}
+    expect(contaBancaria.getSaldo()).toBe(900);
+  });
 });
