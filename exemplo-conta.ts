@@ -26,6 +26,15 @@ export class ContaBancaria {
     return this.saldo;
   }
 
+  public getSaldoEImprimeEmPapel() {
+    if (this.saldo <= 0) {
+      throw new Error("seu saldo é insuficiente para imprimir");
+    } else {
+      this.saldo = this.saldo - 1;
+      return this.saldo;
+    }
+  }
+
   public deposita(valor: number) {
     this.validaDeposito(valor);
     this.saldo = this.saldo + valor;
@@ -55,10 +64,10 @@ export class ContaBancaria {
   }
 
   public validaTransferencia(valor: number) {
-    if (valor > 1000) {
+    if (valor > 900) {
       throw new Error("transferencia maxima diaria ultrapassada!");
     }
-    if (valor < 0) {
+    if (valor <= 0) {
       throw new Error("Transferencia não pode ser igual a zero! ");
     }
   }
@@ -70,7 +79,8 @@ export class ContaBancaria {
 
   public pagaPix(valor: number) {
     this.validaTransferencia(valor);
-    this.saldo = this.saldo - valor;
+
+    this.saldo - this.saldo - valor;
   }
 
   public transfere(valor: number) {
